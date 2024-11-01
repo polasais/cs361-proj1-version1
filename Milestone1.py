@@ -120,11 +120,17 @@ class Project1:
 
     def remove_word(self, definition):
         """Removes a given word from the catalog of words."""
-        word_to_remove = [key for key, value in self.word_dictionary.items() if value == definition]
-        self.word_dictionary.pop(word_to_remove[0])
-        print("The word has been removed from the list of words.")
+        print("Note: This action will permanently remove the word from the list of words.")
+        user_choice = input("Are you sure you want to continue? Type 'Yes' for yes and 'No' for no.")
+        if user_choice.lower() == 'yes':
+            word_to_remove = [key for key, value in self.word_dictionary.items() if value == definition]
+            self.word_dictionary.pop(word_to_remove[0])
+            print("The word has been removed from the list of words.")
+        elif user_choice.lower() == 'no':
+            print("Good choice! Keep studying these words.")
+        else:
+            print("Invalid choice.")
         self.greetings_helper()
-
     def tips(self):
         """Prints some tips for the user."""
         print("""
