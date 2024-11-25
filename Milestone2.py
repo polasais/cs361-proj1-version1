@@ -1,6 +1,6 @@
 # Isac Polasak"
 # CS 361
-# Milestone 1 project, part 1 version 1
+# Milestone 2 project
 
 import random
 import time
