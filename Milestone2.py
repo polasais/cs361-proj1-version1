@@ -1,6 +1,13 @@
 # Isac Polasak"
 # CS 361
-# Milestone 2 project
+# Main Project: Quiz Program.
+# Description: This program is a Quiz Application designed to enhance vocabulary skills. Users can:
+# - Take multiple-choice quizzes to guess word definitions.
+# - Add new words and definitions to the dictionary.
+# - Remove words from the dictionary with an option to undo the action.
+# - Track their high score, which integrates with a microservice for updates and retrieval.
+# - Access tips for effective use of the program.
+
 
 import random
 import time
@@ -8,6 +15,7 @@ import json
 import os
 
 class Project1:
+    """Main project"""
     def __init__(self):
         self.word_dictionary = {
             "Alacrity": "Liveliness and eagerness.",
@@ -35,6 +43,7 @@ class Project1:
 
 
     def greeting(self):
+        """Greets user to the quiz."""
         print("Welcome to the Ultimate Vocabulary Quiz!")
         return self.greetings_helper()
 
@@ -61,6 +70,7 @@ class Project1:
             self.streak_request()
 
     def quiz(self):
+        """This is the main quiz, where the words are chosen and then sorted randomly. It then calls ask_question to ask the user for their input.""""
         # Initialize a new quiz
         self.word, self.definition = random.choice(list(self.word_dictionary.items()))
         print("You can type 'Skip' to skip this word, or 'remove' to remove it from the list of words.")
@@ -76,6 +86,7 @@ class Project1:
         self.ask_question()
 
     def ask_question(self):
+        """Asks the user to select which word is the correct answer. It then calls check_answer to check if the user's choice was accurate."""
         print("Which of the following is its correct definition?")
         for index, defs in enumerate(self.list_of_defs):
             print(f"{index + 1}. {defs}")
@@ -84,12 +95,12 @@ class Project1:
         self.check_answer(user_guess)
 
     def streak_send(self, score):
-        """Automatically sends a new high score to the microservice.
-           The microservice replaces HS if it's greater than current HS."""
+        """Automatically sends a new high score to the microservice. The microservice replaces HS if it's greater than current HS."""
         with open('request.json', 'w') as hiscore_file:
             # Dump in the new High Score as a request.json file with action: 0 (0 = update High Score)
             json.dump({"streak": score, "action": 0}, hiscore_file)
         return self.quiz()
+        
     def streak_request(self):
         """Requests the streak from the Microservice."""
         print("Sending request to microservice...")
@@ -115,8 +126,9 @@ class Project1:
                 print("Error: High score is not found")
             os.remove('response.json')
         return
+        
     def check_answer(self, user_guess):
-        """Checks if the user's guess is correct."""
+        """Checks if the user's guess is correct. If it's an invalid choice, it repeats the question by calling ask_question."""
         if user_guess.isdigit() and 1 <= int(user_guess) <= 4:
             if self.list_of_defs[int(user_guess) - 1] == self.definition:
                 print("Congrats! You got the word right!")
@@ -144,10 +156,12 @@ class Project1:
             # Prompts the user again for valid input
 
     def program_close(self):
+        """Closes the program."""
         print("Thank you for using this program! Have a great day!")
         return
+        
     def add_word(self):
-        """Adds a word to the dictionary of words by asking first for the word then its definition."""
+        """Adds a word to the dictionary of words by asking first for the word then its definition. Calls greetings_helper."""
         print("First, type in the word you'd like to add, then its definition.")
         input_word = input("What is the word? ")
         if input_word in self.word_dictionary:
@@ -161,7 +175,7 @@ class Project1:
         self.greetings_helper()
 
     def remove_word(self, definition):
-        """Removes a given word from the catalog of words."""
+        """Removes a given word from the catalog of words. Calls greetings_helper"""
         print("Note: This action will permanently remove the word from the list of words.")
         user_choice = input("Are you sure you want to continue? Type 'Yes' for yes and 'No' for no: ")
         if user_choice.lower() == 'yes':
@@ -182,8 +196,9 @@ class Project1:
         else:
             print("Invalid choice.")
         self.greetings_helper()
+        
     def tips(self):
-        """Prints some tips for the user."""
+        """Prints some tips for the user. Calls greetings_helper."""
         print("""
         Tip 1: You can add words in your target language along with its English definition to help you learn new languages.
         Tip 2: You can add vocabulary for your GSCEs and other official exams to help you study for those.
